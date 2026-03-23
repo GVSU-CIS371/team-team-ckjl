@@ -86,8 +86,7 @@ Use `v-if` to conditionally show content:
 ## Important
 
 - Always check `if (!user.value) return` before making Firestore calls
-- Never hardcode a `uid` — always use `user.value.uid`
-- Firestore security rules enforce that users can only access their own documents
+- Use Firestore security rules to enforce that users can only access their own documents
 
 
 
@@ -103,12 +102,8 @@ Added base pages for:
 - Explore
 
 
+### Router
 I added to `index.ts` the router, the router just swaps out which Vue component is rendered inside `<RouterView />`. Everything happens client-side instantly. The benefit is the browser does not make a request for the new HTML page, it is instantly loaded. 
-
-I also added a `beforeEach` guard. This checks before each route if the user is logged in, if not it routes them to the login page. With this implementation we can assume in each page that the user is logged in. 
-
-I also added template.vue to serve as a template for new pages. I just took the current template.html and transformed it into the template.vue.
-
 ``` ts
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -142,19 +137,81 @@ router.beforeEach(async (to, from) => {
   }
 })
 ```
+I also added a `beforeEach` guard. This checks before each route if the user is logged in, if not it routes them to the login page. With this implementation we can assume in each page that the user is logged in. 
 
+We can control which pages require authentication by adding `meta: { requiresAuth: true }` to the route.
 
+### Template
+I also added `template.vue` to serve as a template for new pages. I just took the current `template.html` and transformed it into the `template.vue`.
+
+### Firebase
+I added `firebase.ts` to handle the firebase configuration.
+```ts
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth"
+import { getFirestore } from "firebase/firestore"
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: import.meta.env.VITE_API_KEY,
+    authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_APP_ID,
+    measurementId: import.meta.env.VITE_MEASUREMENT_ID
+}
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+
+```
 I added a composable `useAuth.ts` that returns the current user. This is a reactive ref, so it will automatically update when the user logs in or out. 
 
-I added `firebase.ts` to handle the firebase configuration.
+```ts
+import { ref } from 'vue'
+import { onAuthStateChanged, getRedirectResult } from 'firebase/auth'
+import { auth } from '../firebase'
+import type { User } from 'firebase/auth'
+
+const user = ref<User | null>(null)
+
+onAuthStateChanged(auth, (firebaseUser) => {
+    user.value = firebaseUser
+})
+
+export function useAuth() {
+    return { user }
+}
+
+getRedirectResult(auth).catch((error) => {
+    console.error(error)
+})
+```
 
 I added a `.env.example`. This is the template for the secrets, you can find the secrets in the firebase console under project settings. Make sure to add the secrets to the `.env` file and not `.env.example`.
 
-I changed `App.vue` to reference the router.
 
+
+I changed `App.vue` to reference the router.
+```ts
+<script setup lang="ts">
+import { RouterView } from 'vue-router'
+</script>
+
+<template>
+    <RouterView />
+</template>
+```
 
 # Important things to note
 
-We are using Vue so we cannot have href tags we must use <RouterLink to="/">Home</RouterLink> instead.
-
-We can control which pages require authentication by adding `meta: { requiresAuth: true }` to the route.
+We are using Vue so we cannot have href tags we must use `<RouterLink to="/">Home</RouterLink>` instead.
