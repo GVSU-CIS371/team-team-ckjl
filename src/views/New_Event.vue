@@ -81,7 +81,7 @@ function resetForm() {
     <header>
       <div class="header-left">
         <figure>
-          <RouterLink to="/"><img class="tablet-desktop" src="" alt="Occurency Logo"></RouterLink>
+          <RouterLink to="/"><img class="tablet-desktop" src="/src/images/occurency_temp_logo.png" alt="Occurency Logo"></RouterLink>
           <h2 class="slogan oswald-regular">Your greatest memories start here</h2>
         </figure>
       </div>
@@ -298,6 +298,11 @@ function resetForm() {
   height: 6px;
   background: linear-gradient(to right, #6D326D, #83a85e);
   width: 100%;
+}
+
+.form-card .v-field__field,
+.form-card .v-field {
+  background-color: #f5f5f5 !important;
 }
 
 .urgency-label {
