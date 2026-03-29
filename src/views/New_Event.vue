@@ -11,6 +11,7 @@ const description = ref('')
 const eventDate = ref('')
 const eventTime = ref('')
 const location = ref('')
+const imageUrl = ref('')
 const isPublic = ref(false)
 const urgency = ref(1)
 const submitting = ref(false)
@@ -36,6 +37,7 @@ async function submitEvent() {
       event_time: eventTime.value,
       location: location.value,
       priority: urgency.value,
+      image_url: imageUrl.value || '',
       is_public: isPublic.value,
       created_at: Timestamp.now(),
     })
@@ -56,6 +58,7 @@ function resetForm() {
   eventDate.value = ''
   eventTime.value = ''
   location.value = ''
+  imageUrl.value = ''
   isPublic.value = false
   urgency.value = 1
 }
@@ -229,7 +232,21 @@ function resetForm() {
                   </v-slider>
                 </v-col>
 
-                <!-- Public Toggle -->
+                <!-- Image URL -->
+              <v-col cols="12">
+                <v-text-field
+                  v-model="imageUrl"
+                  label="Event Image URL (optional)"
+                  placeholder="e.g. https://i.imgur.com/abc123.jpg"
+                  prepend-inner-icon="mdi-image"
+                  color="primary"
+                  variant="outlined"
+                  hint="Paste a link to an image for your event. Leave blank to use the default."
+                  persistent-hint
+                />
+              </v-col>
+
+              <!-- Public Toggle -->
                 <v-col cols="12">
                   <v-switch
                     v-model="isPublic"
