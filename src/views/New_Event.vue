@@ -31,6 +31,7 @@ async function submitEvent() {
     await addDoc(collection(db, 'events'), {
       creator_id: user.value?.uid,
       creator_email: user.value?.email,
+      creator_name: user.value?.displayName || user.value?.email,
       title: title.value,
       description: description.value,
       event_date: eventDate.value,
