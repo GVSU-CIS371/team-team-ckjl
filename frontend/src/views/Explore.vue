@@ -20,7 +20,7 @@
 		<header>
 			<div class="header-left">
 				<figure>
-					<RouterLink to="/"><img class="tablet-desktop" src="" alt="Occurency Logo"></RouterLink>
+					<RouterLink to="/"><img class="tablet-desktop" src="../images/occurency_temp_logo.png" alt="Occurency Logo"></RouterLink>
 					<h2 class="slogan oswald-regular">Your greatest memories start here</h2>
 				</figure>
 			</div>
