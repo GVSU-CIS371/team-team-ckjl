@@ -1,0 +1,217 @@
+/* Created by: Kyle Gordon, 3/23/25 */
+
+/* --- Reset --- */
+body, header, nav, main, footer, img, h1, p, figure, figcaption, ul, li {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* --- Base Styles --- */
+body {
+  background-color: #E5F4E3;
+  font-family: sans-serif, Arial, Geneva;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+  margin: auto;
+}
+
+h1, .slogan {
+  color: purple;
+  text-align: center;
+}
+
+h1 {
+  padding: 1%;
+}
+
+.slogan {
+  margin: 0.5em;
+}
+
+img {
+  max-width: 75%;
+  display: block;
+  margin: auto;
+}
+
+/* --- Typography --- */
+.oswald-regular { 
+  font-family: "Oswald", sans-serif; 
+  font-weight: 400; 
+}
+
+/* ================================
+   MOBILE FIRST
+================================ */
+
+.tablet-desktop {
+  display: none;
+}
+
+/* --- Mobile Nav --- */
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  background-color: #6D326D;
+}
+
+.mobile-nav a {
+  font-size: 1.5em;
+  text-align: center;
+  text-decoration: none;
+  padding: 1em;
+  color: white;
+}
+
+/* --- Header --- */
+header {
+  text-align: center;
+  padding: 1em 0;
+  background-image: linear-gradient(to bottom, #c9f3c3, #ffffff);
+}
+
+/* --- Main --- */
+main {
+  flex: 1;
+  background-color: white;
+  padding: 1em;
+}
+
+/* --- Footer --- */
+footer {
+  background-image: linear-gradient(to top, #c9f3c3, #fff);
+  padding: 1em 0;
+}
+
+footer p {
+  text-align: center;
+  font-size: 1em;
+  color: #83a85e;
+  margin: 0.5em 0;
+}
+
+footer p a {
+  text-decoration: none;
+  color: #83a85e;
+}
+
+/* ================================
+   TABLET (>= 732px)
+================================ */
+@media screen and (min-width: 732px) {
+
+  /* Hide mobile nav */
+  .mobile-nav {
+    display: none;
+  }
+
+  /* Show desktop nav */
+  .tablet-desktop {
+    display: flex;
+  }
+
+  /* Header + Nav Container */
+  header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav {
+    width: 100%;
+  }
+
+  nav ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5em;
+    list-style: none;
+    padding: 1em 0;
+  }
+
+  nav li a {
+    text-decoration: none;
+    color: #83a85e;
+    font-size: 1.2em;
+  }
+
+  main {
+    background-color: #fff;
+    color: #6e9249;
+    text-align: center;
+  }
+}
+
+/* ================================
+   DESKTOP (>= 769px)
+================================ */
+@media screen and (min-width: 769px) {
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em 2em;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+  }
+
+  nav ul {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+    list-style: none;
+  }
+
+  nav li a {
+    padding: 0.5em 0.8em;
+    transition: 0.3s;
+  }
+
+  nav li a:hover {
+    color: #316b9b;
+  }
+
+  .nav-button a {
+    background-color: white;
+    color: black;
+    padding: 0.7em 1.1em;
+    border: 2px solid #6D326D;
+    border-radius: 6px;
+    font-size: 1.15em;
+    transition: 0.3s;
+  }
+
+  .nav-button a:hover {
+    background-color: #6D326D;
+    color: white;
+  }
+  p a:hover{
+    color: #316b9b;
+  }
+}
+
+/* ================================
+   LARGE DESKTOP (>= 1921px)
+================================ */
+@media screen and (min-width: 1921px) {
+  #container {
+    width: 1920px;
+    margin: 0 auto;
+  }
+}
