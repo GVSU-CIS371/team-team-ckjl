@@ -215,3 +215,43 @@ import { RouterView } from 'vue-router'
 # Important things to note
 
 We are using Vue so we cannot have href tags we must use `<RouterLink to="/">Home</RouterLink>` instead.
+
+# New Event Reference
+### File: `src/views/New_Event.vue`
+
+---
+
+## What It Does
+Allows authenticated users to create a new event. On successful submission the form clears and shows a success message. Data is saved to the `events` collection in Firestore.
+
+---
+
+## Firestore Collection: `events`
+Fields saved on event creation:
+- `creator_id` — Firebase UID of the logged in user
+- `creator_email` — Email of the logged in user
+- `creator_name` — Display name of the logged in user (falls back to email)
+- `title` — Event title (required)
+- `description` — Event description
+- `event_date` — Date string in `YYYY-MM-DD` format (required)
+- `event_time` — Time string in `HH:MM` format
+- `location` — Location string
+- `priority` — Integer 1–5 (1 = Low, 5 = High)
+- `is_public` — Boolean (true = visible on Explore page)
+- `image_url` — URL string for event image (empty string if not provided)
+- `created_at` — Firestore Timestamp
+
+---
+
+## Auth
+- Page requires authentication — unauthenticated users are redirected to `/login` by the router guard
+- Uses `useAuth()` composable to get the current user
+
+---
+
+## Vuetify
+Vuetify has been added to the project. `main.ts` and `vite.config.ts` have both been updated. Theme colors are registered as:
+- `primary` = `#6D326D` (purple)
+- `secondary` = `#83a85e` (green)
+
+**After pulling this branch run `npm install` before running the app.**
