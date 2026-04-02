@@ -1,0 +1,8 @@
+{
+  "name": "occurrency-workspace",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
+}
