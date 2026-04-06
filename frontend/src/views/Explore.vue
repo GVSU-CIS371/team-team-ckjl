@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { useAuth, login, logout } from '../composables/useAuth'
 import { ref, computed, onMounted } from 'vue'
 import { collection, getDocs, query, where, addDoc, updateDoc, deleteDoc, doc, Timestamp } from 'firebase/firestore'
 import { db } from '../firebase'
-import { useAuth } from '../composables/useAuth'
 
 const { user } = useAuth()
 
@@ -215,6 +215,14 @@ onMounted(loadEvents)
           <RouterLink to="/"><img class="tablet-desktop" src="/src/images/occurency_temp_logo.png" alt="Occurency Logo"></RouterLink>
           <h2 class="slogan oswald-regular">Your greatest memories start here</h2>
         </figure>
+        <div v-if="user" class="login-container">
+          <p class="login-text">Welcome, {{ user.email }}</p>
+          <button class="login-button" @click="logout">Logout</button>
+        </div>
+        <div v-else class="login-container">
+          <p class="login-text">You are not logged in.</p>
+          <button class="login-button" @click="login">Login with Google</button>
+        </div>
       </div>
       <nav>
         <ul class="oswald-regular tablet-desktop">
@@ -229,127 +237,133 @@ onMounted(loadEvents)
     </header>
 
     <main>
-      <v-container>
-        <h2 class="page-title oswald-regular">Explore Events</h2>
+      <div v-if="!user">
+        <h2>You must be logged in to see this page.</h2>
+        <button class="login-button" @click="login">Login with Google</button>
+      </div>
+      <div v-else>
+        <v-container>
+          <h2 class="page-title oswald-regular">Explore Events</h2>
 
-        <!-- Search & Filter Bar -->
-        <v-card class="mb-6 pa-4 search-card" elevation="2" rounded="lg" color="#E5F4E3">
-          <v-row align="center">
-            <v-col cols="12" md="4">
-              <v-text-field
-                v-model="searchKeyword"
-                label="Search events..."
-                prepend-inner-icon="mdi-magnify"
-                variant="outlined"
-                color="primary"
-                density="compact"
-                hide-details
-                bg-color="white"
-                clearable
-              />
-            </v-col>
-            <v-col cols="12" sm="6" md="3">
-              <v-text-field
-                v-model="dateFrom"
-                label="From date"
-                type="date"
-                variant="outlined"
-                color="primary"
-                density="compact"
-                hide-details
-                bg-color="white"
-                prepend-inner-icon="mdi-calendar-start"
-              />
-            </v-col>
-            <v-col cols="12" sm="6" md="3">
-              <v-text-field
-                v-model="dateTo"
-                label="To date"
-                type="date"
-                variant="outlined"
-                color="primary"
-                density="compact"
-                hide-details
-                bg-color="white"
-                prepend-inner-icon="mdi-calendar-end"
-              />
-            </v-col>
-            <v-col cols="12" md="2" class="text-center">
-              <v-btn variant="outlined" color="primary" @click="clearFilters" block>
-                Clear
-              </v-btn>
+          <!-- Search & Filter Bar -->
+          <v-card class="mb-6 pa-4 search-card" elevation="2" rounded="lg" color="#E5F4E3">
+            <v-row align="center">
+              <v-col cols="12" md="4">
+                <v-text-field
+                  v-model="searchKeyword"
+                  label="Search events..."
+                  prepend-inner-icon="mdi-magnify"
+                  variant="outlined"
+                  color="primary"
+                  density="compact"
+                  hide-details
+                  bg-color="white"
+                  clearable
+                />
+              </v-col>
+              <v-col cols="12" sm="6" md="3">
+                <v-text-field
+                  v-model="dateFrom"
+                  label="From date"
+                  type="date"
+                  variant="outlined"
+                  color="primary"
+                  density="compact"
+                  hide-details
+                  bg-color="white"
+                  prepend-inner-icon="mdi-calendar-start"
+                />
+              </v-col>
+              <v-col cols="12" sm="6" md="3">
+                <v-text-field
+                  v-model="dateTo"
+                  label="To date"
+                  type="date"
+                  variant="outlined"
+                  color="primary"
+                  density="compact"
+                  hide-details
+                  bg-color="white"
+                  prepend-inner-icon="mdi-calendar-end"
+                />
+              </v-col>
+              <v-col cols="12" md="2" class="text-center">
+                <v-btn variant="outlined" color="primary" @click="clearFilters" block>
+                  Clear
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card>
+
+          <!-- Result count -->
+          <p v-if="!loading" class="result-count mb-4">
+            Showing {{ filteredEvents.length }} event{{ filteredEvents.length !== 1 ? 's' : '' }}
+          </p>
+
+          <!-- Loading -->
+          <div v-if="loading" class="text-center py-10">
+            <v-progress-circular indeterminate color="primary" size="48" />
+          </div>
+
+          <!-- No events -->
+          <div v-else-if="filteredEvents.length === 0" class="text-center py-10">
+            <v-icon size="64" color="grey-lighten-1">mdi-calendar-remove</v-icon>
+            <p class="text-grey mt-4">
+              {{ events.length === 0 ? 'No public events yet.' : 'No events match your search.' }}
+              <RouterLink v-if="events.length === 0" to="/new-event">Create one!</RouterLink>
+            </p>
+          </div>
+
+          <!-- Events Grid -->
+          <v-row v-else>
+            <v-col v-for="event in filteredEvents" :key="event.id" cols="12" sm="6" lg="4">
+              <v-card
+                rounded="lg"
+                elevation="3"
+                height="100%"
+                class="event-card d-flex flex-column"
+                @click="openDetail(event)"
+                color="#E5F4E3"
+                style="cursor: pointer;"
+              >
+                <!-- Event Image -->
+                <v-img
+                  :src="getImage(event)"
+                  height="180"
+                  cover
+                  class="event-image"
+                >
+                  <!-- Priority chip overlaid on image -->
+                  <div class="image-chip-overlay">
+                    <v-chip :color="priorityColor(event.priority)" size="small" label>
+                      {{ priorityLabel(event.priority) }}
+                    </v-chip>
+                  </div>
+                </v-img>
+
+                <v-card-title class="text-wrap pt-3 font-weight-bold" style="color: #2c2c2c; font-size: 1.2em;">{{ event.title }}</v-card-title>
+
+                <v-card-subtitle class="pb-2" style="color: #444; opacity: 1;">
+                  <div><v-icon size="small">mdi-calendar</v-icon> {{ formatDate(event.event_date) }}<span v-if="event.event_time"> &bull; {{ formatTime(event.event_time) }}</span></div>
+                  <div v-if="event.location"><v-icon size="small">mdi-map-marker</v-icon> {{ event.location }}</div>
+                </v-card-subtitle>
+
+                <v-divider class="mx-3 mb-2"></v-divider>
+                <v-card-text class="text-body-2 pt-0 description-preview flex-grow-1" style="color: #555;">
+                  {{ event.description }}
+                </v-card-text>
+
+                <v-card-actions class="pa-3 mt-auto">
+                  <v-btn variant="tonal" color="primary" size="small" block>
+                    View Details & RSVP
+                  </v-btn>
+                </v-card-actions>
+
+              </v-card>
             </v-col>
           </v-row>
-        </v-card>
-
-        <!-- Result count -->
-        <p v-if="!loading" class="result-count mb-4">
-          Showing {{ filteredEvents.length }} event{{ filteredEvents.length !== 1 ? 's' : '' }}
-        </p>
-
-        <!-- Loading -->
-        <div v-if="loading" class="text-center py-10">
-          <v-progress-circular indeterminate color="primary" size="48" />
-        </div>
-
-        <!-- No events -->
-        <div v-else-if="filteredEvents.length === 0" class="text-center py-10">
-          <v-icon size="64" color="grey-lighten-1">mdi-calendar-remove</v-icon>
-          <p class="text-grey mt-4">
-            {{ events.length === 0 ? 'No public events yet.' : 'No events match your search.' }}
-            <RouterLink v-if="events.length === 0" to="/new-event">Create one!</RouterLink>
-          </p>
-        </div>
-
-        <!-- Events Grid -->
-        <v-row v-else>
-          <v-col v-for="event in filteredEvents" :key="event.id" cols="12" sm="6" lg="4">
-            <v-card
-              rounded="lg"
-              elevation="3"
-              height="100%"
-              class="event-card d-flex flex-column"
-              @click="openDetail(event)"
-              color="#E5F4E3"
-              style="cursor: pointer;"
-            >
-              <!-- Event Image -->
-              <v-img
-                :src="getImage(event)"
-                height="180"
-                cover
-                class="event-image"
-              >
-                <!-- Priority chip overlaid on image -->
-                <div class="image-chip-overlay">
-                  <v-chip :color="priorityColor(event.priority)" size="small" label>
-                    {{ priorityLabel(event.priority) }}
-                  </v-chip>
-                </div>
-              </v-img>
-
-              <v-card-title class="text-wrap pt-3 font-weight-bold" style="color: #2c2c2c; font-size: 1.2em;">{{ event.title }}</v-card-title>
-
-              <v-card-subtitle class="pb-2" style="color: #444; opacity: 1;">
-                <div><v-icon size="small">mdi-calendar</v-icon> {{ formatDate(event.event_date) }}<span v-if="event.event_time"> &bull; {{ formatTime(event.event_time) }}</span></div>
-                <div v-if="event.location"><v-icon size="small">mdi-map-marker</v-icon> {{ event.location }}</div>
-              </v-card-subtitle>
-
-              <v-divider class="mx-3 mb-2"></v-divider>
-              <v-card-text class="text-body-2 pt-0 description-preview flex-grow-1" style="color: #555;">
-                {{ event.description }}
-              </v-card-text>
-
-              <v-card-actions class="pa-3 mt-auto">
-                <v-btn variant="tonal" color="primary" size="small" block>
-                  View Details & RSVP
-                </v-btn>
-              </v-card-actions>
-
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
+        </v-container>
+      </div>
     </main>
 
     <!-- Event Detail Dialog -->

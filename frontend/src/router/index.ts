@@ -16,8 +16,8 @@ const router = createRouter({
     { path: '/login', component: Login },
     { path: '/profile', component: Profile, meta: { requiresAuth: true } },
     { path: '/explore', component: Explore, meta: { requiresAuth: true } },
-    { path: '/about', component: About, meta: { requiresAuth: true } },
-    { path: '/contact', component: Contact, meta: { requiresAuth: true } },
+    { path: '/about', component: About },
+    { path: '/contact', component: Contact },
     { path: '/new-event', component: NewEvent, meta: { requiresAuth: true } },
   ],
 })

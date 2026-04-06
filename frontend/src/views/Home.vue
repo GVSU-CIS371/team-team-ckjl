@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { useAuth } from '../composables/useAuth'
+import { useAuth, login, logout } from '../composables/useAuth'
+
 const { user } = useAuth()
+
 </script>
 
 <template>
@@ -26,6 +28,16 @@ const { user } = useAuth()
 					<RouterLink to="/" ><img class="tablet-desktop" src="../images/occurency_temp_logo.png" alt="Occurency Logo"></RouterLink>
 					<h2 class="slogan oswald-regular">Your greatest memories start here</h2>
 				</figure>
+
+				<div v-if="user" class="login-container">
+					<p class="login-text">Welcome, {{ user.email }}</p>
+					<button class="login-button" @click="logout">Logout</button>
+				</div>
+				<div v-else class="login-container">
+					<p class="login-text">You are not logged in.</p>
+					<button class="login-button" @click="login">Login with Google</button>
+				</div>
+
 			</div>
 
 			<nav>
@@ -41,7 +53,6 @@ const { user } = useAuth()
 		</header>
 
 		<main>
-			<p>Current user: {{ user?.email }}</p>
 			<h3>Home</h3>
 		</main>
 
