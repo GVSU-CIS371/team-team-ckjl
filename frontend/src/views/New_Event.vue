@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { collection, addDoc, Timestamp } from 'firebase/firestore'
 import { db } from '../firebase'
-import { useAuth } from '../composables/useAuth'
+import { useAuth, login, logout } from '../composables/useAuth'
 
 const { user } = useAuth()
 
@@ -88,6 +88,14 @@ function resetForm() {
           <RouterLink to="/"><img class="tablet-desktop" src="/src/images/occurency_temp_logo.png" alt="Occurency Logo"></RouterLink>
           <h2 class="slogan oswald-regular">Your greatest memories start here</h2>
         </figure>
+        <div v-if="user" class="login-container">
+          <p class="login-text">Welcome, {{ user.email }}</p>
+          <button class="login-button" @click="logout">Logout</button>
+        </div>
+        <div v-else class="login-container">
+          <p class="login-text">You are not logged in.</p>
+          <button class="login-button" @click="login">Login with Google</button>
+        </div>
       </div>
       <nav>
         <ul class="oswald-regular tablet-desktop">
@@ -102,180 +110,186 @@ function resetForm() {
     </header>
 
     <main>
-      <v-container class="form-container">
-        <h2 class="form-title oswald-regular">Create a New Event</h2>
+      <div v-if="!user">
+        <h2>You must be logged in to see this page.</h2>
+        <button class="login-button" @click="login">Login with Google</button>
+      </div>
+      <div v-else>
+        <v-container class="form-container">
+          <h2 class="form-title oswald-regular">Create a New Event</h2>
 
-        <!-- Success Alert -->
-        <v-alert
-          v-if="success"
-          type="success"
-          variant="tonal"
-          closable
-          class="mb-4"
-          @click:close="success = false"
-        >
-          <v-alert-title>Event Created!</v-alert-title>
-          Your event has been saved. You can create another one below or
-          <RouterLink to="/explore" class="alert-link">explore all events</RouterLink>.
-        </v-alert>
+          <!-- Success Alert -->
+          <v-alert
+            v-if="success"
+            type="success"
+            variant="tonal"
+            closable
+            class="mb-4"
+            @click:close="success = false"
+          >
+            <v-alert-title>Event Created!</v-alert-title>
+            Your event has been saved. You can create another one below or
+            <RouterLink to="/explore" class="alert-link">explore all events</RouterLink>.
+          </v-alert>
 
-        <!-- Error Alert -->
-        <v-alert
-          v-if="error"
-          type="error"
-          variant="tonal"
-          closable
-          class="mb-4"
-          @click:close="error = ''"
-        >
-          {{ error }}
-        </v-alert>
+          <!-- Error Alert -->
+          <v-alert
+            v-if="error"
+            type="error"
+            variant="tonal"
+            closable
+            class="mb-4"
+            @click:close="error = ''"
+          >
+            {{ error }}
+          </v-alert>
 
-        <!-- Form Card -->
-        <v-card class="form-card" elevation="4" rounded="lg" color="#E5F4E3">
-          <!-- Purple accent bar at top -->
-          <div class="card-accent-bar"></div>
+          <!-- Form Card -->
+          <v-card class="form-card" elevation="4" rounded="lg" color="#E5F4E3">
+            <!-- Purple accent bar at top -->
+            <div class="card-accent-bar"></div>
 
-          <div class="pa-8">
-            <v-form @submit.prevent="submitEvent">
-              <v-row>
-                <!-- Title -->
+            <div class="pa-8">
+              <v-form @submit.prevent="submitEvent">
+                <v-row>
+                  <!-- Title -->
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="title"
+                      label="Event Title"
+                      placeholder="e.g. Backyard BBQ"
+                      required
+                      prepend-inner-icon="mdi-calendar-star"
+                      color="primary"
+                      variant="outlined"
+                      bg-color="#E5F4E3"
+                    />
+                  </v-col>
+
+                  <!-- Description -->
+                  <v-col cols="12">
+                    <v-textarea
+                      v-model="description"
+                      label="Description"
+                      placeholder="Tell people what this event is about..."
+                      rows="4"
+                      prepend-inner-icon="mdi-text"
+                      color="primary"
+                      variant="outlined"
+                      auto-grow
+                      bg-color="#E5F4E3"
+                    />
+                  </v-col>
+
+                  <!-- Date -->
+                  <v-col cols="12" sm="6">
+                    <v-text-field
+                      v-model="eventDate"
+                      label="Date"
+                      type="date"
+                      required
+                      prepend-inner-icon="mdi-calendar"
+                      color="primary"
+                      variant="outlined"
+                      bg-color="#E5F4E3"
+                    />
+                  </v-col>
+
+                  <!-- Time -->
+                  <v-col cols="12" sm="6">
+                    <v-text-field
+                      v-model="eventTime"
+                      label="Time"
+                      type="time"
+                      prepend-inner-icon="mdi-clock-outline"
+                      color="primary"
+                      variant="outlined"
+                      bg-color="#E5F4E3"
+                    />
+                  </v-col>
+
+                  <!-- Location -->
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="location"
+                      label="Location"
+                      placeholder="e.g. 123 Main St, Grand Rapids, MI"
+                      prepend-inner-icon="mdi-map-marker"
+                      color="primary"
+                      variant="outlined"
+                      bg-color="#E5F4E3"
+                    />
+                  </v-col>
+
+                  <!-- Urgency -->
+                  <v-col cols="12">
+                    <div class="urgency-label">
+                      <v-icon color="primary" size="small">mdi-alert-circle-outline</v-icon>
+                      <span>Priority: <strong>{{ urgency }}</strong> / 5</span>
+                    </div>
+                    <v-slider
+                      v-model="urgency"
+                      :min="1"
+                      :max="5"
+                      :step="1"
+                      color="primary"
+                      track-color="secondary"
+                      show-ticks="always"
+                      tick-size="4"
+                    >
+                      <template v-slot:prepend>
+                        <span class="text-caption text-medium-emphasis">Low</span>
+                      </template>
+                      <template v-slot:append>
+                        <span class="text-caption text-medium-emphasis">High</span>
+                      </template>
+                    </v-slider>
+                  </v-col>
+
+                  <!-- Image URL -->
                 <v-col cols="12">
                   <v-text-field
-                    v-model="title"
-                    label="Event Title"
-                    placeholder="e.g. Backyard BBQ"
-                    required
-                    prepend-inner-icon="mdi-calendar-star"
+                    v-model="imageUrl"
+                    label="Event Image URL (optional)"
+                    placeholder="e.g. https://i.imgur.com/abc123.jpg"
+                    prepend-inner-icon="mdi-image"
                     color="primary"
                     variant="outlined"
-                    bg-color="#E5F4E3"
+                    hint="Paste a link to an image for your event. Leave blank to use the default."
+                    persistent-hint
                   />
                 </v-col>
 
-                <!-- Description -->
-                <v-col cols="12">
-                  <v-textarea
-                    v-model="description"
-                    label="Description"
-                    placeholder="Tell people what this event is about..."
-                    rows="4"
-                    prepend-inner-icon="mdi-text"
-                    color="primary"
-                    variant="outlined"
-                    auto-grow
-                    bg-color="#E5F4E3"
-                  />
-                </v-col>
+                <!-- Public Toggle -->
+                  <v-col cols="12">
+                    <v-switch
+                      v-model="isPublic"
+                      color="primary"
+                      :label="isPublic ? 'Public — Anyone can see and explore this event.' : 'Private — Only invited guests can see this event.'"
+                      inset
+                      prepend-icon="mdi-earth"
+                    />
+                  </v-col>
 
-                <!-- Date -->
-                <v-col cols="12" sm="6">
-                  <v-text-field
-                    v-model="eventDate"
-                    label="Date"
-                    type="date"
-                    required
-                    prepend-inner-icon="mdi-calendar"
-                    color="primary"
-                    variant="outlined"
-                    bg-color="#E5F4E3"
-                  />
-                </v-col>
-
-                <!-- Time -->
-                <v-col cols="12" sm="6">
-                  <v-text-field
-                    v-model="eventTime"
-                    label="Time"
-                    type="time"
-                    prepend-inner-icon="mdi-clock-outline"
-                    color="primary"
-                    variant="outlined"
-                    bg-color="#E5F4E3"
-                  />
-                </v-col>
-
-                <!-- Location -->
-                <v-col cols="12">
-                  <v-text-field
-                    v-model="location"
-                    label="Location"
-                    placeholder="e.g. 123 Main St, Grand Rapids, MI"
-                    prepend-inner-icon="mdi-map-marker"
-                    color="primary"
-                    variant="outlined"
-                    bg-color="#E5F4E3"
-                  />
-                </v-col>
-
-                <!-- Urgency -->
-                <v-col cols="12">
-                  <div class="urgency-label">
-                    <v-icon color="primary" size="small">mdi-alert-circle-outline</v-icon>
-                    <span>Priority: <strong>{{ urgency }}</strong> / 5</span>
-                  </div>
-                  <v-slider
-                    v-model="urgency"
-                    :min="1"
-                    :max="5"
-                    :step="1"
-                    color="primary"
-                    track-color="secondary"
-                    show-ticks="always"
-                    tick-size="4"
-                  >
-                    <template v-slot:prepend>
-                      <span class="text-caption text-medium-emphasis">Low</span>
-                    </template>
-                    <template v-slot:append>
-                      <span class="text-caption text-medium-emphasis">High</span>
-                    </template>
-                  </v-slider>
-                </v-col>
-
-                <!-- Image URL -->
-              <v-col cols="12">
-                <v-text-field
-                  v-model="imageUrl"
-                  label="Event Image URL (optional)"
-                  placeholder="e.g. https://i.imgur.com/abc123.jpg"
-                  prepend-inner-icon="mdi-image"
-                  color="primary"
-                  variant="outlined"
-                  hint="Paste a link to an image for your event. Leave blank to use the default."
-                  persistent-hint
-                />
-              </v-col>
-
-              <!-- Public Toggle -->
-                <v-col cols="12">
-                  <v-switch
-                    v-model="isPublic"
-                    color="primary"
-                    :label="isPublic ? 'Public — Anyone can see and explore this event.' : 'Private — Only invited guests can see this event.'"
-                    inset
-                    prepend-icon="mdi-earth"
-                  />
-                </v-col>
-
-                <!-- Submit -->
-                <v-col cols="12">
-                  <v-btn
-                    type="submit"
-                    size="large"
-                    block
-                    :loading="submitting"
-                    prepend-icon="mdi-plus-circle"
-                    class="submit-btn"
-                  >
-                    Create Event
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-form>
-          </div>
-        </v-card>
-      </v-container>
+                  <!-- Submit -->
+                  <v-col cols="12">
+                    <v-btn
+                      type="submit"
+                      size="large"
+                      block
+                      :loading="submitting"
+                      prepend-icon="mdi-plus-circle"
+                      class="submit-btn"
+                    >
+                      Create Event
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-form>
+            </div>
+          </v-card>
+        </v-container>
+      </div> 
     </main>
 
     <footer class="oswald-regular">
