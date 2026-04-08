@@ -3,6 +3,7 @@ import { useAuth, login, logout } from '../composables/useAuth'
 import { ref, computed, onMounted } from 'vue'
 import { collection, getDocs, query, where, addDoc, updateDoc, deleteDoc, doc, Timestamp } from 'firebase/firestore'
 import { db } from '../firebase'
+import CommentsSection from '../components/CommentsSection.vue'
 
 const { user } = useAuth()
 
@@ -433,6 +434,11 @@ onMounted(loadEvents)
           >
             Attendees ({{ allAttendees.length }})
           </v-btn>
+
+          <v-divider class="my-4" />
+
+          <CommentsSection :eventId="selectedEvent.id" />
+
         </v-card-text>
 
         <v-card-actions class="pa-4">
