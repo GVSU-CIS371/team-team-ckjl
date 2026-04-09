@@ -217,6 +217,38 @@ footer p a {
   p a:hover {
     color: #316b9b;
   }
+  
+  .abt-img{
+	  border: 4px solid silver;
+  }
+  
+  /* Shared layout for sections */
+  main > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2em;
+    text-align: left;
+    margin-bottom: 2em;
+	font-size: 17px;
+  }
+	
+  .abt-img {
+    max-width: 40%;
+  }
+
+  main > div:nth-of-type(1) {
+    flex-direction: row;
+  }
+
+  main > div:nth-of-type(2) {
+    flex-direction: row-reverse;
+  }
+
+  main > div:nth-of-type(3) {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 
 /* ================================
