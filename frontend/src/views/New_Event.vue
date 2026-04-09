@@ -28,7 +28,8 @@ async function submitEvent() {
   error.value = ''
 
   try {
-    await addDoc(collection(db, 'events'), {
+    // CHANGED: save return value to get new event's ID
+    const eventRef = await addDoc(collection(db, 'events'), {
       creator_id: user.value?.uid,
       creator_email: user.value?.email,
       creator_name: user.value?.displayName || user.value?.email,
@@ -40,6 +41,16 @@ async function submitEvent() {
       priority: urgency.value,
       image_url: imageUrl.value || '',
       is_public: isPublic.value,
+      created_at: Timestamp.now(),
+    })
+
+    // NEW: auto-RSVP the creator as Going
+    await addDoc(collection(db, 'attendees'), {
+      event_id: eventRef.id,
+      user_id: user.value?.uid,
+      user_email: user.value?.email,
+      user_name: user.value?.displayName || user.value?.email,
+      rsvp_status: 'Going',
       created_at: Timestamp.now(),
     })
 
@@ -88,8 +99,9 @@ function resetForm() {
           <RouterLink to="/"><img class="tablet-desktop" src="/src/images/occurency_temp_logo.png" alt="Occurency Logo"></RouterLink>
           <h2 class="slogan oswald-regular">Your greatest memories start here</h2>
         </figure>
+        <!-- CHANGED: user.email -> user.displayName || user.email -->
         <div v-if="user" class="login-container">
-          <p class="login-text">Welcome, {{ user.email }}</p>
+          <p class="login-text">Welcome, {{ user.displayName || user.email }}</p>
           <button class="login-button" @click="logout">Logout</button>
         </div>
         <div v-else class="login-container">
