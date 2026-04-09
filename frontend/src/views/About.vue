@@ -73,7 +73,7 @@ const { user } = useAuth()
 				Occurency is a software service designed to bring people together for unforgettable experiences. 
 				Using our platform, users can create and find events that match their interests, whether it's a local concert, a block party, or soemthing entirely new. 
 				</p>
-				<img class="tablet-desktop abt-img" src="images/occurency_abt_OS_SI2.jpg" alt="Occurency developers sitting around a laptop">
+				<img class="tablet-desktop abt-img" src="../images/occurency_abt_OS_SI2.jpg" alt="Occurency developers sitting around a laptop">
 		</div>
 		
 		<!-- Our Mission -->
@@ -87,7 +87,7 @@ const { user } = useAuth()
 				<p>
 				We strive to build a welcoming and inclusive platform where anyone can discover something new, meet like-minded individuals, and turn everyday moments into meaningful experiences.
 				</p>
-				<img class="tablet-desktop abt-img" src="images/occurency_abt_OM_SI1.jpg" alt="A group of people sitting happily around the dining table at an event planned with Occurency">
+				<img class="tablet-desktop abt-img" src="../images/occurency_abt_OM_SI1.jpg" alt="A group of people sitting happily around the dining table at an event planned with Occurency">
 		</div>
 
 		<!-- Our Team (Tablet/Desktop Only) -->
