@@ -249,6 +249,100 @@ footer p a {
     flex-direction: column;
     text-align: center;
   }
+  .contact-page-media{
+	  display: flex;
+	  flex-direction: row;
+	  justify-content: center; 
+	  gap: 1.5rem;             
+	  align-items: flex-end;
+	  width: 100%;
+	  margin: 0 auto;
+	}
+	
+  .contact-page-num {
+    display: flex;
+    flex-direction: row;
+    justify-content: center; 
+    align-items: center;             
+    width: 100%;
+	}
+
+  .contact-stack {
+	  display: flex;
+	  flex-direction: column;       
+	  align-items: center;         
+	  text-align: center;
+	}
+
+  .contact-stack img {
+	  width: 100px;
+	  height: 100px;          
+	}
+  
+	#google-map{
+	  border: 5px solid silver;
+	}
+	  
+	.contact-form {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		padding: 2rem 0;
+	}
+
+	.contact-form form {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		max-width: 500px;
+		gap: 1.2rem;
+		text-align: left;
+	}
+
+	.contact-form input, 
+	.contact-form select, 
+	.contact-form textarea {
+		padding: 12px;
+		border: 1px solid #ccc;
+		border-radius: 8px;
+		font-family: inherit;
+		font-size: 1rem;
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.contact-form textarea {
+		height: 120px;
+		resize: vertical;
+	}
+
+	.contact-form button {
+		background-color: white;
+		color: black;
+		padding: 0.7em 1.1em;
+		border: 2px solid #6D326D;
+		border-radius: 6px;
+		font-size: 1.15em;
+		transition: 0.3s;
+		padding: 12px 24px;
+		cursor: pointer;
+		font-size: 1.1rem;
+		align-self: center;
+		width: fit-content;
+		font-family: inherit;
+	}
+
+	.contact-form button:hover {
+		background-color: #6D326D;
+		color: white;
+	}
+
+	.contact-form label {
+		font-weight: 600;
+		margin-bottom: -0.8rem;
+	}
+	
 }
 
 /* ================================
