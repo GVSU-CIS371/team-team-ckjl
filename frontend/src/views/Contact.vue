@@ -142,7 +142,7 @@ const { user } = useAuth()
 		<footer class="oswald-regular">
 
 			<p>&#169; Copyright 2026. All Rights Reserved.</p>
-			<p>555-666-7777</p>
+			<p>(622) 873-6297</p>
 			<p>OccurencyInc@gmail.com</p>
 			<p>Instagram, Twitter, Facebook, TikTok</p>
 			<p>

@@ -407,7 +407,7 @@ onMounted(loadProfile)
 
     <footer class="oswald-regular">
       <p>&#169; Copyright 2026. All Rights Reserved.</p>
-      <p>555-666-7777</p>
+      <p>(622) 873-6297</p>
       <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="703f13130502151e1309391e1330171d11191c5e131f1d">[email&#160;protected]</a></p>
       <p>Instagram, Twitter, Facebook, TikTok</p>
       <p>
