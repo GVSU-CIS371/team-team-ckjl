@@ -71,22 +71,22 @@ const { user } = useAuth()
 		
 				<div class="contact-stack">
 					<h4>Instagram</h4>
-					<a href="https://instagram.com"><img class="tablet-desktop" src="../imagesimages/insta_occur.png" alt="Instagram Logo"></a>
+					<a href="https://instagram.com"><img class="tablet-desktop" src="../images/insta_occur.png" alt="Instagram Logo"></a>
 				</div>
 				
 				<div class="contact-stack">
 					<h4>Twitter</h4>
-					<a href="https://x.com/"><img class="tablet-desktop" src="../imagesimages/twitter_occur.png" alt="Twitter Logo"></a>
+					<a href="https://x.com/"><img class="tablet-desktop" src="../images/twitter_occur.png" alt="Twitter Logo"></a>
 				</div>
 				
 				<div class="contact-stack">
 					<h4>Facebook</h4>
-					<a href="https://facebook.com"><img class="tablet-desktop" src="../imagesimages/facebook_occur.png" alt="Facebook Logo"></a>
+					<a href="https://facebook.com"><img class="tablet-desktop" src="../images/facebook_occur.png" alt="Facebook Logo"></a>
 				</div>
 				
 				<div class="contact-stack">
 					<h4>TikTok</h4>
-					<a href="https://tiktok.com"><img class="tablet-desktop" src="../imagesimages/tiktok_occur.png" alt="TikTok Logo"></a>
+					<a href="https://tiktok.com"><img class="tablet-desktop" src="../images/tiktok_occur.png" alt="TikTok Logo"></a>
 				</div>
 				
 		</div>
@@ -97,7 +97,7 @@ const { user } = useAuth()
 	
 			<h3>Occurency HQ Address</h3>
 			<p>1 Campus Dr, Allendale, MI</p>
-			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2919.6715274116314!2d-85.89161532475342!3d42.96412599672635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8819a31f0c9d398f%3A0xea0367b3e0ec32fa!2sGrand%20Valley%20State%20University!5e0!3m2!1sen!2sus!4v1776428818262!5m2!1sen!2sus" width="700" height="300" style="google-map;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+			<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2919.6715274116314!2d-85.89161532475342!3d42.96412599672635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8819a31f0c9d398f%3A0xea0367b3e0ec32fa!2sGrand%20Valley%20State%20University!5e0!3m2!1sen!2sus!4v1776428818262!5m2!1sen!2sus" width="700" height="300" style="google-map" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 	
 		</div>
 		
