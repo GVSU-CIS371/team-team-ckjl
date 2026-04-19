@@ -28,7 +28,7 @@ const { user } = useAuth()
 					<h2 class="slogan oswald-regular">Your greatest memories start here</h2>
 				</figure>
 				<div v-if="user" class="login-container">
-					<p class="login-text">Welcome, {{ user.email }}</p>
+					<p class="login-text">Welcome, {{ user.displayName || user.email }}</p>
 					<button class="login-button" @click="logout">Logout</button>
 				</div>
 				<div v-else class="login-container">
@@ -57,9 +57,7 @@ const { user } = useAuth()
 			<div class="contact-stack">
 				<h3>Phone Number</h3>
 				<p>(622) 873-6297</p>
-			</div>
 			
-			<div class="contact-stack">
 				<h3>Email</h3>
 				<p>OccurencyInc@gmail.com</p>
 			</div>

@@ -121,8 +121,8 @@ function resetForm() {
       </nav>
     </header>
 
-    <main>
-      <div v-if="!user">
+    <main class="oswald-regular">
+      <div v-if="!user" class="flex-section">
         <h2>You must be logged in to see this page.</h2>
         <button class="login-button" @click="login">Login with Google</button>
       </div>

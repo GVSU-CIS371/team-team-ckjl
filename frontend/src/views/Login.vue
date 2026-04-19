@@ -43,7 +43,7 @@ const handleLogin = async () => {
 			</div>
 		</header>
 
-		<main>
+		<main class="oswald-regular flex-section">
 			<h2>You must be logged in to see this page.</h2>
 			<button class="login-button" @click="handleLogin">Login with Google</button>
 		</main>

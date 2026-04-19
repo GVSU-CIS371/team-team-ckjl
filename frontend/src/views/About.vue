@@ -28,7 +28,7 @@ const { user } = useAuth()
 					<h2 class="slogan oswald-regular">Your greatest memories start here</h2>
 				</figure>
 				<div v-if="user" class="login-container">
-					<p class="login-text">Welcome, {{ user.email }}</p>
+					<p class="login-text">Welcome, {{ user.displayName || user.email }}</p>
 					<button class="login-button" @click="logout">Logout</button>
 				</div>
 				<div v-else class="login-container">
@@ -53,11 +53,10 @@ const { user } = useAuth()
 		<h2>About Occurency</h2>
 		
 		<br>
-		
-		<!-- Our Story -->
 		<h2>Our Story</h2>
-		<div>
-			
+		<!-- Our Story -->
+		<div class="story-section flex-section">
+			<img class="about-image tablet-desktop" src="../images/occurency_abt_OS_SI2.jpg" alt="Occurency developers sitting around a laptop">
 				<p>
 				We started as a team of 4 friends who wanted to bring our events to a wider audience, which then evolved to a little side project called "Occurency". 
 				We wanted to create a platform that would make it easy for people to discover and attend events in their local area, and to connect with others who share their interests. 
@@ -73,12 +72,11 @@ const { user } = useAuth()
 				Occurency is a software service designed to bring people together for unforgettable experiences. 
 				Using our platform, users can create and find events that match their interests, whether it's a local concert, a block party, or soemthing entirely new. 
 				</p>
-				<img class="tablet-desktop abt-img" src="../images/occurency_abt_OS_SI2.jpg" alt="Occurency developers sitting around a laptop">
 		</div>
-		
-		<!-- Our Mission -->
 		<h2>Our Mission</h2>
-		<div>
+		<!-- Our Mission -->
+		<div class="mission-section flex-section">
+			
 				<p>
 				Our mission is to help people create lasting memories by connecting them with events that inspire and excite them. 
 				At Occurency, our belief is that life is about the experiences and memories we share with others, and we're here to make those memories happen.
@@ -87,11 +85,11 @@ const { user } = useAuth()
 				<p>
 				We strive to build a welcoming and inclusive platform where anyone can discover something new, meet like-minded individuals, and turn everyday moments into meaningful experiences.
 				</p>
-				<img class="tablet-desktop abt-img" src="../images/occurency_abt_OM_SI1.jpg" alt="A group of people sitting happily around the dining table at an event planned with Occurency">
+				<img class="about-image tablet-desktop" src="../images/occurency_abt_OM_SI1.jpg" alt="A group of people sitting happily around the dining table at an event planned with Occurency">
 		</div>
-
+		<br>
 		<!-- Our Team (Tablet/Desktop Only) -->
-		<div class="tablet-desktop">
+		<div class="team-section">
 			<h2>Our Team</h2>
 				<p>
 				Our team is passionate about creating a user-friendly platform that fosters community and engagement, and we're committed to providing excellent customer service and support to our users.
