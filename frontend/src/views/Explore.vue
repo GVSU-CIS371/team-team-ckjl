@@ -217,7 +217,7 @@ onMounted(loadEvents)
           <h2 class="slogan oswald-regular">Your greatest memories start here</h2>
         </figure>
         <div v-if="user" class="login-container">
-          <p class="login-text">Welcome, {{ user.email }}</p>
+          <p class="login-text">Welcome, {{ user.displayName || user.email }}</p>
           <button class="login-button" @click="logout">Logout</button>
         </div>
         <div v-else class="login-container">
@@ -332,7 +332,7 @@ onMounted(loadEvents)
                   :src="getImage(event)"
                   height="180"
                   cover
-                  class="event-image"
+                  class="event-img"
                 >
                   <!-- Priority chip overlaid on image -->
                   <div class="image-chip-overlay">
@@ -373,7 +373,7 @@ onMounted(loadEvents)
         <div class="card-accent-bar"></div>
 
         <!-- Event Image -->
-        <v-img :src="getImage(selectedEvent)" height="220" cover position="center center" />
+        <v-img :src="getImage(selectedEvent)" height="220" contain class="event-img" />
 
         <v-card-title class="text-h5 pt-4 px-6">{{ selectedEvent.title }}</v-card-title>
 
@@ -506,7 +506,7 @@ onMounted(loadEvents)
 
     <footer class="oswald-regular">
       <p>&#169; Copyright 2026. All Rights Reserved.</p>
-      <p>555-666-7777</p>
+      <p>(622) 873-6297</p>
       <p>OccurencyInc@gmail.com</p>
       <p>Instagram, Twitter, Facebook, TikTok</p>
       <p>

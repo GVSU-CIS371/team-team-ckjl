@@ -43,7 +43,7 @@ const handleLogin = async () => {
 			</div>
 		</header>
 
-		<main>
+		<main class="oswald-regular flex-section">
 			<h2>You must be logged in to see this page.</h2>
 			<button class="login-button" @click="handleLogin">Login with Google</button>
 		</main>
@@ -51,7 +51,7 @@ const handleLogin = async () => {
 		<footer class="oswald-regular">
 
 			<p>&#169; Copyright 2026. All Rights Reserved.</p>
-			<p>555-666-7777</p>
+			<p>(622) 873-6297</p>
 			<p>OccurencyInc@gmail.com</p>
 			<p>Instagram, Twitter, Facebook, TikTok</p>
 			<p>
