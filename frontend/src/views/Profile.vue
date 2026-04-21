@@ -3,6 +3,8 @@ import { ref, onMounted } from 'vue'
 import { collection, getDocs, query, where, doc, deleteDoc, updateDoc, Timestamp } from 'firebase/firestore'
 import { db } from '../firebase'
 import { useAuth, login, logout } from '../composables/useAuth'
+import InvitationPanel from '../components/InvitationPanel.vue'
+
 
 const { user } = useAuth()
 
@@ -288,6 +290,10 @@ onMounted(loadProfile)
                       {{ event.is_public ? 'Public' : 'Private' }}
                     </v-chip>
                     <p class="text-body-2 mt-2">{{ event.description }}</p>
+					<InvitationPanel
+  				      :eventId="event.id"
+  					  :eventTitle="event.title"
+				    />
                   </v-card-text>
                   <v-card-actions class="pa-3">
                     <v-btn variant="tonal" color="primary" size="small" @click="openEdit(event)" prepend-icon="mdi-pencil">
