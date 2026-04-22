@@ -3,6 +3,7 @@ import { useAuth, login, logout } from '../composables/useAuth'
 import { ref, computed, onMounted } from 'vue'
 import { collection, getDocs, query, where, addDoc, updateDoc, deleteDoc, doc, Timestamp } from 'firebase/firestore'
 import { db } from '../firebase'
+import CommentsSection from '../components/CommentsSection.vue'
 
 const { user } = useAuth()
 
@@ -271,6 +272,7 @@ onMounted(loadEvents)
 				</v-container>
 			</div>
 		</main>
+
 		<!-- Event Detail Dialog -->
     <v-dialog v-model="detailDialog" max-width="650" scrollable>
       <v-card v-if="selectedEvent" rounded="lg">
@@ -338,6 +340,11 @@ onMounted(loadEvents)
           >
             Attendees ({{ allAttendees.length }})
           </v-btn>
+
+          <v-divider class="my-4" />
+
+          <CommentsSection :eventId="selectedEvent.id" />
+
         </v-card-text>
 
         <v-card-actions class="pa-4">
@@ -398,15 +405,9 @@ onMounted(loadEvents)
       </v-card>
     </v-dialog>
 
-			<v-dialog v-model="detailDialog" max-width="650" scrollable>
-			</v-dialog>
-
-			<v-dialog v-model="attendeesDialog" max-width="450" scrollable>
-			</v-dialog>
-
-			<v-snackbar v-model="snackbar" timeout="3000" color="primary">
-			{{ snackbarMessage }}
-			</v-snackbar>
+    <v-snackbar v-model="snackbar" timeout="3000" color="primary">
+      {{ snackbarMessage }}
+    </v-snackbar>
 
 		<footer class="oswald-regular">
 
